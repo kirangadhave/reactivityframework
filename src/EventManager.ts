@@ -52,4 +52,33 @@ export class EventManager {
     (EventManager.all[type] || []).slice().map(handler => handler(evt));
     (EventManager.all["*"] || []).slice().map(handler => handler(type, evt));
   }
+
+  static saveToSessionStorage(saveName: string) {
+    if (!sessionStorageExists)
+      throw new Error("Session Storage does not exist");
+    try {
+      window.sessionStorage[saveName] = EventManager.getEventHandlerMapString();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static loadFromSessionStorage(saveName: string) {
+    if (!sessionStorageExists())
+      throw new Error("Session Storage does not exist");
+    try {
+      EventManager.all = JSON.parse(window.sessionStorage[saveName]);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static getEventHandlerMapString() {
+    return JSON.stringify(EventManager.all);
+  }
+}
+
+function sessionStorageExists() {
+  if (window) if (window.sessionStorage) return true;
+  return false;
 }
