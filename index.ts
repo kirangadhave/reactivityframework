@@ -5,4 +5,4 @@ export {
   WildCardEventHandlerList,
   EventHandlerMap,
   EventManager
-} from "./src/EventManager";
+} from "./src/EventManager/EventManager";
