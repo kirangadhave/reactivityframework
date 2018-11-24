@@ -13,10 +13,21 @@ export class EventManager {
   private static all: EventHandlerMap;
   private static isInitialized: boolean = false;
 
-  static init(all?: EventHandlerMap): boolean {
-    EventManager.all = all || Object.create(null);
-    EventManager.isInitialized = true;
-    return EventManager.isInitialized;
+  static init(all?: EventHandlerMap, forcedReset: boolean = false): boolean {
+    if (!EventManager.isInitialized) {
+      EventManager.all = all || Object.create(null);
+      EventManager.isInitialized = true;
+      return EventManager.isInitialized;
+    } else if (all) {
+      EventManager.all = all;
+      return EventManager.isInitialized;
+    } else if (forcedReset) {
+      EventManager.all = Object.create(null);
+      return EventManager.isInitialized;
+    }
+    throw new Error(
+      "EventManager already initialized. If you want to reinitialize sed forcedReset flag or pass in EventHandlerMap object "
+    );
   }
 
   static on(type: string, handler: EventHandler) {
