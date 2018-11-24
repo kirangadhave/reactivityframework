@@ -1,4 +1,4 @@
-import {
+export {
   EventHandler,
   WildCardEventHandler,
   EventHandlerList,
