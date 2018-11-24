@@ -13,9 +13,10 @@ export class EventManager {
   private static all: EventHandlerMap;
   private static isInitialized: boolean = false;
 
-  static init(all: EventHandlerMap) {
+  static init(all?: EventHandlerMap): boolean {
     EventManager.all = all || Object.create(null);
     EventManager.isInitialized = true;
+    return EventManager.isInitialized;
   }
 
   static on(type: string, handler: EventHandler) {
