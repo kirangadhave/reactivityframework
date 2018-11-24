@@ -26,7 +26,7 @@ export class EventManager {
       return EventManager.isInitialized;
     }
     throw new Error(
-      "EventManager already initialized. If you want to reinitialize sed forcedReset flag or pass in EventHandlerMap object "
+      "EventManager already initialized. If you want to reinitialize set forcedReset flag or pass in EventHandlerMap object"
     );
   }
 
