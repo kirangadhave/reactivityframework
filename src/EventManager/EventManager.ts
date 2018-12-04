@@ -6,22 +6,22 @@ export type EventHandlerMap = {
   [type: string]: EventHandlerList;
 };
 
-export class EventManager {
-  private static all: EventHandlerMap = {};
+const all: EventHandlerMap = {};
 
-  static on(type: string, handler: EventHandler) {
-    (EventManager.all[type] || (EventManager.all[type] = [])).push(handler);
+export const EventManager = {
+  on: (type: string, handler: EventHandler) => {
+    (all[type] || (all[type] = [])).push(handler);
+  },
+  off: (type: string, handler?: EventHandler) => {
+    if (handler) {
+      if (all[type]) {
+        all[type].splice(all[type].indexOf(handler) >>> 0, 1);
+      }
+    } else {
+      if (all[type]) all[type] = [];
+    }
+  },
+  emit: (type: string, evt?: any) => {
+    (all[type] || []).slice().map(handler => handler(evt));
   }
-
-  static off(type: string, handler: EventHandler) {
-    if (EventManager.all[type])
-      EventManager.all[type].splice(
-        EventManager.all[type].indexOf(handler) >>> 0,
-        1,
-      );
-  }
-
-  static emit(type: string, evt?: any) {
-    (EventManager.all[type] || []).slice().map(handler => handler(evt));
-  }
-}
+};
