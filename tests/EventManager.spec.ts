@@ -50,4 +50,22 @@ describe('EventManager#', () => {
       expect(EventManager.all()).to.not.have.property('tEsT');
     });
   });
+
+  describe('off()', () => {
+    it('should be a function', () => {
+      expect(EventManager)
+        .to.have.property('off')
+        .that.is.a('function');
+    });
+
+    it('should remove handler for any type', () => {
+      let func = () => {};
+      EventManager.on('test', func);
+      expect(EventManager.all())
+        .to.have.property('test')
+        .that.deep.equals([func]);
+      EventManager.off('test', func);
+      expect(EventManager.all()).to.have.property('test').that.is.empty;
+    });
+  });
 });
