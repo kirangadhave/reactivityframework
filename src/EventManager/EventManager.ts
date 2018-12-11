@@ -13,7 +13,7 @@ export const EventManager = {
     return all;
   },
   on: (type: string, handler: EventHandler, thisArg?: any) => {
-    let eventArr = type.split(".");
+    let eventArr = type.split('.');
     let parent = eventArr[0];
     if (!thisArg) {
       if (eventArr.length > 1)
@@ -43,5 +43,5 @@ export const EventManager = {
   events: () => {
     const e = all;
     return e;
-  }
+  },
 };
