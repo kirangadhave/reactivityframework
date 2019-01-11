@@ -2,5 +2,5 @@ export {
   EventHandler,
   EventHandlerList,
   EventHandlerMap,
-  EventManager,
-} from './EventManager/EventManager';
+  Manager
+} from "./EventManager/EventManager";

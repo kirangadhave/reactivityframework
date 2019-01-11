@@ -1,71 +1,71 @@
-import {expect} from 'chai';
-import 'mocha';
+import { expect } from "chai";
+import "mocha";
 
-import {EventManager} from './../src/index';
+import { Manager } from "./../src/index";
 
-describe('EventManager#', () => {
+describe("Manager#", () => {
   beforeEach(() => {
-    EventManager.reset();
+    Manager.reset();
   });
 
-  describe('on()', () => {
-    it('should be a function', () => {
-      expect(EventManager)
-        .to.have.property('on')
-        .that.is.a('function');
+  describe("on()", () => {
+    it("should be a function", () => {
+      expect(Manager)
+        .to.have.property("on")
+        .that.is.a("function");
     });
 
-    it('should register handlers for new type', () => {
+    it("should register handlers for new type", () => {
       let func = () => {};
-      EventManager.on('test', func);
-      expect(EventManager.all())
-        .to.have.property('test')
+      Manager.on("test", func).on("test2", func);
+      expect(Manager.all())
+        .to.have.property("test")
         .that.deep.equals([func]);
     });
 
-    it('should append handlers for existing types', () => {
+    it("should append handlers for existing types", () => {
       let func1 = () => {};
       let func2 = () => {
-        console.log('');
+        console.log("");
       };
-      EventManager.on('test', func1);
-      EventManager.on('test', func2);
-      expect(EventManager.all())
-        .to.have.property('test')
+      Manager.on("test", func1);
+      Manager.on("test", func2);
+      expect(Manager.all())
+        .to.have.property("test")
         .that.deep.equals([func1, func2]);
     });
 
-    it('should not change case', () => {
+    it("should not change case", () => {
       let func1 = () => {};
       let func2 = () => {};
-      EventManager.on('TEST', func1);
-      EventManager.on('TeSt', func2);
-      expect(EventManager.all())
-        .to.have.property('TEST')
+      Manager.on("TEST", func1);
+      Manager.on("TeSt", func2);
+      expect(Manager.all())
+        .to.have.property("TEST")
         .that.deep.equals([func1]);
-      expect(EventManager.all()).to.not.have.property('test');
-      expect(EventManager.all())
-        .to.have.property('TeSt')
+      expect(Manager.all()).to.not.have.property("test");
+      expect(Manager.all())
+        .to.have.property("TeSt")
         .that.deep.equals([func2]);
-      expect(EventManager.all()).to.not.have.property('tEsT');
+      expect(Manager.all()).to.not.have.property("tEsT");
     });
   });
 
-  describe('off()', () => {
-    it('should be a function', () => {
-      expect(EventManager)
-        .to.have.property('off')
-        .that.is.a('function');
+  describe("off()", () => {
+    it("should be a function", () => {
+      expect(Manager)
+        .to.have.property("off")
+        .that.is.a("function");
     });
 
-    it('should remove handler for any type', () => {
+    it("should remove handler for any type", () => {
       let func = () => {};
-      EventManager.on('test', func);
-      expect(EventManager.all())
-        .to.have.property('test')
+      Manager.on("test", func);
+      expect(Manager.all())
+        .to.have.property("test")
         .that.deep.equals([func]);
-      EventManager.off('test', func);
-      expect(EventManager.all()).to.have.property('test').that.is.empty;
+      Manager.off("test", func);
+      expect(Manager.all()).to.have.property("test").that.is.empty;
     });
   });
 });

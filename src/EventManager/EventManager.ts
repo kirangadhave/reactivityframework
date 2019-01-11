@@ -8,12 +8,21 @@ export type EventHandlerMap = {
 
 let all: EventHandlerMap = {};
 
-export const EventManager = {
+type EventManager = {
+  all: () => EventHandlerMap;
+  on: (type: string, handler: EventHandler, thisArg?: any) => EventManager;
+  off: (type: string, handler?: EventHandler | undefined) => EventManager;
+  emit: (type: string, evt?: any) => EventManager;
+  reset: () => EventManager;
+  events: () => EventHandlerMap;
+};
+
+export const Manager: EventManager = {
   all: (): EventHandlerMap => {
     return all;
   },
-  on: (type: string, handler: EventHandler, thisArg?: any) => {
-    let eventArr = type.split('.');
+  on: (type: string, handler: EventHandler, thisArg?: any): EventManager => {
+    let eventArr = type.split(".");
     let parent = eventArr[0];
     if (!thisArg) {
       if (eventArr.length > 1)
@@ -24,8 +33,9 @@ export const EventManager = {
         (all[parent] || (all[parent] = [])).push(handler.bind(thisArg));
       (all[type] || (all[type] = [])).push(handler.bind(thisArg));
     }
+    return Manager;
   },
-  off: (type: string, handler?: EventHandler) => {
+  off: (type: string, handler?: EventHandler): EventManager => {
     if (handler) {
       if (all[type]) {
         all[type].splice(all[type].indexOf(handler) >>> 0, 1);
@@ -33,15 +43,17 @@ export const EventManager = {
     } else {
       if (all[type]) all[type] = [];
     }
+    return Manager;
   },
-  emit: (type: string, evt?: any) => {
+  emit: (type: string, evt?: any): EventManager => {
     (all[type] || []).slice().map(handler => handler(evt));
+    return Manager;
   },
-  reset: () => {
+  reset: (): EventManager => {
     all = {};
+    return Manager;
   },
-  events: () => {
-    const e = all;
-    return e;
-  },
+  events: (): EventHandlerMap => {
+    return all;
+  }
 };
